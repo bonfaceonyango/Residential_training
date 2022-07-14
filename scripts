@@ -1,0 +1,11 @@
+# merging files
+fastp -m -i TIA_othr_fwd.fq  -I TIA_othr_rev.fq --merged_out merged.fastq
+
+# convert to fastq
+seqkit fq2fa reads_1.fq -o reads_1.fa
+
+# create a database
+diamond makedb -d ../blast_db/uniprot_sprot.fasta
+
+# blast
+diamond blastx -d ../blast_db/uniprot_sprot -q merged.fa --outfmt 5 -o TIA_othr_blast.xml --max-target-seqs 1
